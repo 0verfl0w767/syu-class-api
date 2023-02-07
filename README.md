@@ -1,6 +1,6 @@
 # syu-class-api
 
-비공식 삼육대학교 공통교양 조회 크롤링 엔진 입니다. (syu-class.kro.kr)
+비공식 삼육대학교 공통교양 조회 크롤링 엔진 입니다. ([syu-class.kro.kr](syu-class.kro.kr))
 
 Python 3.11 버전에서 테스트가 진행되었습니다.
 
