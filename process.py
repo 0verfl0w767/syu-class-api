@@ -29,14 +29,16 @@ class Process:
     self.SUWINGS_USERID = SUWINGS_USERID
     self.SUWINGS_PASSWD = SUWINGS_PASSWD
     self.DEBUGGER = DEBUGGER
+    
     self.LOGGER = logger.Logger(DEBUGGER)
     
     options = Options()
-    options.add_argument("headless") # headless 모드 설정
-    options.add_argument("disable-gpu") 
+    options.add_argument("headless")
+    options.add_argument("disable-gpu")
     # options.add_argument("disable-infobars")
     # options.add_argument("--disable-extensions")
-    options.add_argument("--start-maximized")
+    # options.add_argument("--start-maximized")
+    
     self.DRIVER = webdriver.Chrome(self.CHROMIUM_PATH, options=options)
     self.DRIVER.get(self.TARGET_URL)
   

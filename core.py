@@ -24,6 +24,7 @@ class Core:
   def __init__(self, DRIVER, DEBUGGER):
     self.DRIVER = DRIVER
     self.DEBUGGER = DEBUGGER
+    
     self.LOGGER = logger.Logger(DEBUGGER)
     
     self.API_DATA = {}
@@ -46,24 +47,14 @@ class Core:
     })
   
   def run(self) -> None:
-    MAX = int(self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0_total_cnt\"]").text[:3])
+    MAX = int(self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0_total_cnt\"]").text[:-1]) # [:3] -> [:-1]
     X = math.floor((MAX - 1) / 21)
 
     ccc = -1 # tbody count check
     
     self.LOGGER.info(f"Debugger Mode: {self.DEBUGGER}...")
-    
-    # [0] : 순번
-    # [2] : 강좌번호
-    # [3] : 과목코드
-    # [4] : 과목명
-    # [5] : 학부(과)
-    # [7] : 학년
-    # [8] : 이수구분
-    # [9] : 영역구분
-    # [10] : 학점
-    # [13] : 교수명
-    # [14] : 수업시간/장소
+    self.LOGGER.debuggerInfo(f"{MAX} classes were searched...")
+    self.LOGGER.debuggerInfo(f"It will run around {X} times...")
 
     while True:
       classReal_tbody = self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0_body_tbody\"]")
