@@ -33,7 +33,7 @@ class Process:
     self.LOGGER = logger.Logger(DEBUGGER)
     
     options = Options()
-    options.add_argument("headless")
+    # options.add_argument("headless")
     options.add_argument("disable-gpu")
     # options.add_argument("disable-infobars")
     # options.add_argument("--disable-extensions")
@@ -41,6 +41,17 @@ class Process:
     
     self.DRIVER = webdriver.Chrome(self.CHROMIUM_PATH, options=options)
     self.DRIVER.get(self.TARGET_URL)
+  
+  def isLogined(self) -> bool:
+    status = False
+    
+    try:
+      self.LOGGER.info(self.DRIVER.switch_to.alert.text)
+      status = False
+    except:
+      status = True
+    
+    return status
   
   def login(self) -> None:
     # LOADING ISSUE -> Cannot read properties of undefined (reading 'hybridEncrypt') : Not Loading Script..
@@ -64,8 +75,15 @@ class Process:
     
     login_button = self.DRIVER.find_element(By.XPATH, "//*[@id=\"imgLogin\"]")
     login_button.click()
+    
+    # LOADING ISSUE -> Page not loaded
+    time.sleep(2)
+    
+    if not self.isLogined():
+      self.LOGGER.debuggerInfo("Login failed...")
+      exit() # self.DRIVER.quit() ISSUE -> Driver still running
 
-    self.LOGGER.debuggerInfo("Login completed...")
+    self.LOGGER.debuggerInfo("Login succeeded...")
   
   def classInfo(self) -> None:
     self.DRIVER.implicitly_wait(4)
@@ -80,7 +98,7 @@ class Process:
     classInfo_2 = self.DRIVER.find_element(By.XPATH, "//*[@id=\"treeview1_node_25\"]/tbody/tr/td[3]")
     classInfo_2.click()
     
-    self.LOGGER.debuggerInfo("ClassInfo completed...")
+    self.LOGGER.debuggerInfo("ClassInfo succeeded...")
   
   def classSearch(self) -> None:
     # LOADING ISSUE -> Page not loaded
@@ -130,7 +148,7 @@ class Process:
     classSearch_5 = self.DRIVER.find_element(By.XPATH, "//*[@id=\"tgSelect\"]")
     classSearch_5.click()
     
-    self.LOGGER.debuggerInfo("ClassSearch completed...")
+    self.LOGGER.debuggerInfo("ClassSearch succeeded...")
   
   def core(self) -> None:
     # LOADING ISSUE -> Page not loaded

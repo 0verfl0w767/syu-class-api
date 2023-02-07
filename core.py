@@ -103,10 +103,10 @@ class Core:
         if not msg:
           continue
         
+        self.api(classRealInfo)
+        
         self.LOGGER.progress(int(classRealInfo[0]), MAX, "Progress:", 1, 50)
         self.LOGGER.debuggerInfo(msg)
-        
-        self.api(classRealInfo)
   
     with open("./syu_api.json", "w", encoding = "utf-8") as f:
       json.dump(self.API_DATA, f, ensure_ascii = False, indent = 2)
