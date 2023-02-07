@@ -12,6 +12,7 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
+from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -31,22 +32,93 @@ class Core:
     self.API_DATA["time"] = self.LOGGER.getTime()
     self.API_DATA["api"] = []
   
-  def api(self, classRealInfo) -> None:
+  def api(self, rawClassInfo) -> None:
     self.API_DATA["api"].append({
-      "순번": classRealInfo[0],
-      "강좌번호": classRealInfo[2],
-      "과목코드": classRealInfo[3],
-      "과목명": classRealInfo[4],
-      "학부(과)": classRealInfo[5],
-      "학년": classRealInfo[7],
-      "이수구분": classRealInfo[8],
-      "영역구분": classRealInfo[9],
-      "학점": classRealInfo[10],
-      "교수명": "" if not classRealInfo[13] else classRealInfo[13],
-      "수업시간/장소": "" if not classRealInfo[14] else classRealInfo[14],
+      "순번": rawClassInfo[0],
+      "강좌번호": rawClassInfo[2],
+      "과목코드": rawClassInfo[3],
+      "과목명": rawClassInfo[4],
+      "학부(과)": rawClassInfo[5],
+      "학년": rawClassInfo[7],
+      "이수구분": rawClassInfo[8],
+      "영역구분": rawClassInfo[9],
+      "학점": rawClassInfo[10],
+      "교수명": "" if not rawClassInfo[13] else rawClassInfo[13],
+      "수업시간/장소": "" if not rawClassInfo[14] else rawClassInfo[14],
     })
   
+  # Selenium + BeautifulSoup
   def run(self) -> None:
+    MAX = int(self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0_total_cnt\"]").text[:-1]) # [:3] -> [:-1]
+    X = math.floor((MAX - 1) / 21)
+
+    around_time = -1
+    
+    self.LOGGER.info(f"Debugger Mode: {self.DEBUGGER}...")
+    self.LOGGER.debuggerInfo(f"{MAX} classes were searched...")
+    self.LOGGER.debuggerInfo(f"It will run around {X} times...")
+
+    while True:
+      tr_count = 0
+      around_time += 1
+      maxStatus = False
+      
+      self.LOGGER.debuggerInfo(f"Around {around_time} times...")
+      
+      if around_time > X:
+        self.LOGGER.info("Check the file: syu_api.json")
+        self.LOGGER.debuggerInfo("Exit the process...")
+        break
+      
+      soup = BeautifulSoup(self.DRIVER.page_source, 'html.parser')
+      
+      for tr in soup.select("tbody[id=\"gdM0_F0_body_tbody\"] tr"):
+        tr_count += 1
+        td_index = -1
+        rawClassInfo = []
+        text = ""
+        
+        if (tr_count == 22):
+          self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0\"]").send_keys(Keys.PAGE_DOWN)
+          tr_count = 0
+          
+          if (around_time < X):
+            break
+        
+        if (maxStatus):
+          break
+        
+        for td in tr.select("td"):
+          td_index += 1
+          rawClassInfo.append(td.text)
+          
+          if rawClassInfo[0] == "":
+            break
+          
+          if around_time == X and int(rawClassInfo[0]) <= around_time * 21:
+            break
+          
+          if int(rawClassInfo[0]) == MAX:
+            maxStatus = True
+          
+          if td_index == 1 or td_index == 6 or td_index == 11 or td_index == 12 or td_index > 14:
+            continue
+          
+          text += td.text + " "
+        
+        if not text:
+          continue
+        
+        self.api(rawClassInfo)
+        
+        self.LOGGER.progress(int(rawClassInfo[0]), MAX, "Progress:", 1, 50)
+        self.LOGGER.debuggerInfo(text)
+    
+    with open("./syu_api.json", "w", encoding = "utf-8") as f:
+      json.dump(self.API_DATA, f, ensure_ascii = False, indent = 2)
+  
+  # Selenium ( DEPRECATED )
+  def deprecated_run(self) -> None:
     MAX = int(self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0_total_cnt\"]").text[:-1]) # [:3] -> [:-1]
     X = math.floor((MAX - 1) / 21)
 
@@ -98,6 +170,7 @@ class Core:
           
           if td.text == "출력" or td.text == "평가조회":
             continue
+          
           msg += td.text + " "
         
         if not msg:

@@ -33,7 +33,7 @@ class Process:
     self.LOGGER = logger.Logger(DEBUGGER)
     
     options = Options()
-    # options.add_argument("headless")
+    options.add_argument("headless")
     options.add_argument("disable-gpu")
     # options.add_argument("disable-infobars")
     # options.add_argument("--disable-extensions")
