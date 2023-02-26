@@ -12,15 +12,15 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
-import process
+from syuclass.process.ProcessManager import ProcessManager
 
 CHROMIUM_PATH = "C:\\Users\\kim\\Desktop\\Chromium.exe" # Your chromium path
 TARGET_URL = "https://suwings.syu.ac.kr/sso/login.jsp"
 
 SUWINGS_USERID = "test1234" # Your suwings userid
-SUWINGS_PASSWD = "test1234!@#" # Your suwings passwd
+SUWINGS_PASSWD = "test1234" # Your suwings passwd
 
-DEBUGGER = True # Default: False
+DEBUGGER = False # Default: False
 
-PROCESS = process.Process(CHROMIUM_PATH, TARGET_URL, SUWINGS_USERID, SUWINGS_PASSWD, DEBUGGER)
-PROCESS.run()
+PROCESSMANAGER = ProcessManager(CHROMIUM_PATH, TARGET_URL, SUWINGS_USERID, SUWINGS_PASSWD, DEBUGGER)
+PROCESSMANAGER.onRun()
