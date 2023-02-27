@@ -21,7 +21,7 @@ from selenium.webdriver.common.keys import Keys
 
 from syuclass.utils.api import API
 
-class CoreProcess:
+class LectureCoreProcess:
   def __init__(self, DRIVER, LOGGER):
     self.DRIVER = DRIVER
     self.LOGGER = LOGGER

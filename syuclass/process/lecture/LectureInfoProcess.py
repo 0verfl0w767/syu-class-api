@@ -14,7 +14,7 @@
 #
 from selenium.webdriver.common.by import By
 
-class ClassInfoProcess:
+class LectureInfoProcess:
   def __init__(self, DRIVER, LOGGER):
     self.DRIVER = DRIVER
     self.LOGGER = LOGGER

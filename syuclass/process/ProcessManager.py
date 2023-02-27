@@ -16,9 +16,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from syuclass.process.LoginProcess import LoginProcess
-from syuclass.process.ClassInfoProcess import ClassInfoProcess
-from syuclass.process.ClassSearchProcess import ClassSearchProcess
-from syuclass.process.CoreProcess import CoreProcess
+from syuclass.process.lecture.LectureInfoProcess import LectureInfoProcess
+from syuclass.process.lecture.LecturePlanProcess import LecturePlanProcess
+from syuclass.process.lecture.LectureCoreProcess import LectureCoreProcess
 from syuclass.utils.logger import Logger
 
 class ProcessManager:
@@ -42,9 +42,9 @@ class ProcessManager:
   def onRun(self) -> None:
     LOGINP = LoginProcess(self.DRIVER, self.LOGGER, self.SUWINGS_USERID, self.SUWINGS_PASSWD)
     LOGINP.onRun()
-    CLASSINFOP = ClassInfoProcess(self.DRIVER, self.LOGGER)
+    CLASSINFOP = LectureInfoProcess(self.DRIVER, self.LOGGER)
     CLASSINFOP.onRun()
-    CLASSSEARCHP = ClassSearchProcess(self.DRIVER, self.LOGGER)
+    CLASSSEARCHP = LecturePlanProcess(self.DRIVER, self.LOGGER)
     CLASSSEARCHP.onRun()
-    COREP = CoreProcess(self.DRIVER, self.LOGGER)
+    COREP = LectureCoreProcess(self.DRIVER, self.LOGGER)
     COREP.onRun()
