@@ -16,20 +16,20 @@ import sys
 import datetime
 
 class Logger:
-  def __init__(self, DEBUGGER = False):
+  def __init__(self, DEBUGGER: bool = False):
     self.DEBUGGER = DEBUGGER
   
   def getTime(self) -> str:
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   
-  def info(self, text) -> None:
+  def info(self, text: str) -> None:
     sys.stdout.write('[' + self.getTime() + '] [INFO] ' + text + "\n")
   
-  def debuggerInfo(self, text) -> None:
+  def debuggerInfo(self, text: str) -> None:
     if self.DEBUGGER == True:
       sys.stdout.write('[' + self.getTime() + '] [DEBUGGER] ' + text + "\n")
   
-  def progress(self, iteration, total, prefix = "", decimals = 1, barLength = 100) -> None:
+  def progress(self, iteration: int, total: int, prefix: str = "", decimals: int = 1, barLength: int = 100) -> None:
     if self.DEBUGGER == False:
       formatStr = "{0:." + str(decimals) + "f}"
       percent = formatStr.format(100 * (iteration / float(total)))

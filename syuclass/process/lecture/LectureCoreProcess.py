@@ -16,13 +16,16 @@ import math
 import time
 
 from bs4 import BeautifulSoup
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+from syuclass.process.BaseProcess import BaseProcess
 from syuclass.utils.api import API
+from syuclass.utils.logger import Logger
 
-class LectureCoreProcess:
-  def __init__(self, DRIVER, LOGGER):
+class LectureCoreProcess(BaseProcess):
+  def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger):
     self.DRIVER = DRIVER
     self.LOGGER = LOGGER
     

@@ -12,15 +12,9 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
-from syuclass.process.ProcessManager import ProcessManager
+from abc import ABCMeta, abstractclassmethod
 
-CHROMIUM_PATH = "C:\\Users\\kim\\Desktop\\Chromium.exe" # Your chromium path
-TARGET_URL = "https://suwings.syu.ac.kr/sso/login.jsp"
+class BaseProcess(metaclass=ABCMeta):
+  @abstractclassmethod
+  def onRun() -> None: ...
 
-SUWINGS_USERID = "test1234" # Your suwings userid
-SUWINGS_PASSWD = "test1234" # Your suwings passwd
-
-DEBUGGER = False # Default: False
-
-PROCESSMANAGER: ProcessManager = ProcessManager(CHROMIUM_PATH, TARGET_URL, SUWINGS_USERID, SUWINGS_PASSWD, DEBUGGER)
-PROCESSMANAGER.onRun()

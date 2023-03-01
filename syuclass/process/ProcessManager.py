@@ -15,14 +15,14 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from syuclass.process.LoginProcess import LoginProcess
+from syuclass.process.login.LoginProcess import LoginProcess
 from syuclass.process.lecture.LectureInfoProcess import LectureInfoProcess
 from syuclass.process.lecture.LecturePlanProcess import LecturePlanProcess
 from syuclass.process.lecture.LectureCoreProcess import LectureCoreProcess
 from syuclass.utils.logger import Logger
 
 class ProcessManager:
-  def __init__(self, CHROMIUM_PATH, TARGET_URL, SUWINGS_USERID, SUWINGS_PASSWD, DEBUGGER):
+  def __init__(self, CHROMIUM_PATH: str, TARGET_URL: str, SUWINGS_USERID: str, SUWINGS_PASSWD: str, DEBUGGER: bool):
     self.SUWINGS_USERID = SUWINGS_USERID
     self.SUWINGS_PASSWD = SUWINGS_PASSWD
     self.DEBUGGER = DEBUGGER

@@ -12,10 +12,14 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-class LectureInfoProcess:
-  def __init__(self, DRIVER, LOGGER):
+from syuclass.process.BaseProcess import BaseProcess
+from syuclass.utils.logger import Logger
+
+class LectureInfoProcess(BaseProcess):
+  def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger):
     self.DRIVER = DRIVER
     self.LOGGER = LOGGER
   

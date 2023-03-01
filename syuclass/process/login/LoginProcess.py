@@ -15,10 +15,14 @@
 import sys
 import time
 
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-class LoginProcess:
-  def __init__(self, DRIVER, LOGGER, SUWINGS_USERID, SUWINGS_PASSWD):
+from syuclass.process.BaseProcess import BaseProcess
+from syuclass.utils.logger import Logger
+
+class LoginProcess(BaseProcess):
+  def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger, SUWINGS_USERID: str, SUWINGS_PASSWD: str):
     self.DRIVER = DRIVER
     self.LOGGER = LOGGER
     self.SUWINGS_USERID = SUWINGS_USERID
