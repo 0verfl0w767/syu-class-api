@@ -1,28 +1,48 @@
 # syu-class-api
 
-비공식 삼육대학교 공통교양 조회 크롤링 엔진 입니다. ([syu-class.kro.kr](http://syu-class.kro.kr))
-
-Python 3.11 버전에서 테스트가 진행되었습니다.
+비공식 삼육대학교 강의계획서 조회 크롤링 엔진 입니다. ([syu-class.kro.kr](http://syu-class.kro.kr))
 
 ```
 C:.
+│  LICENSE
 │  main.py
+│  README.md
 │
 ├─data
-│      syu_api.json
 │
 └─syuclass
     ├─process
-    │  │  ClassInfoProcess.py
-    │  │  ClassSearchProcess.py
-    │  │  CoreProcess.py
-    │  │  LoginProcess.py
+    │  │  BaseProcess.py
     │  │  ProcessManager.py
-    │  └
+    │  │
+    │  ├─lecture
+    │  │  │  LectureCoreProcess.py
+    │  │  │  LectureInfoProcess.py
+    │  │  │  LecturePlanProcess.py
+    │  │  │  LectureScanProcess.py
+    │  │  │
+    │  │  └─__pycache__
+    │  │          LectureCoreProcess.cpython-311.pyc
+    │  │          LectureInfoProcess.cpython-311.pyc
+    │  │          LecturePlanProcess.cpython-311.pyc
+    │  │          LectureScanProcess.cpython-311.pyc
+    │  │
+    │  ├─login
+    │  │  │  LoginProcess.py
+    │  │  │
+    │  │          LoginProcess.cpython-311.pyc
+    │  │
+    │  └─__pycache__
+    │          BaseProcess.cpython-311.pyc
+    │          LoginProcess.cpython-311.pyc
+    │          ProcessManager.cpython-311.pyc
     └─utils
         │  api.py
         │  logger.py
-        └
+        │  rawclassinfo.txt
+        │
+        └─__pycache__
+                logger.cpython-311.pyc
 ```
 
 # how to use

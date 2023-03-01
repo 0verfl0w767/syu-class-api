@@ -36,4 +36,4 @@ class LectureInfoProcess(BaseProcess):
     classInfo_2 = self.DRIVER.find_element(By.XPATH, "//*[@id=\"treeview1_node_25\"]/tbody/tr/td[3]")
     classInfo_2.click()
     
-    self.LOGGER.debuggerInfo("ClassInfo succeeded...")
+    self.LOGGER.debuggerInfo("LectureInfoProcess succeeded...")

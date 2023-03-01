@@ -19,6 +19,7 @@ from syuclass.process.login.LoginProcess import LoginProcess
 from syuclass.process.lecture.LectureInfoProcess import LectureInfoProcess
 from syuclass.process.lecture.LecturePlanProcess import LecturePlanProcess
 from syuclass.process.lecture.LectureCoreProcess import LectureCoreProcess
+from syuclass.process.lecture.LectureScanProcess import LectureScanProcess
 from syuclass.utils.logger import Logger
 
 class ProcessManager:
@@ -42,9 +43,9 @@ class ProcessManager:
   def onRun(self) -> None:
     LOGINP = LoginProcess(self.DRIVER, self.LOGGER, self.SUWINGS_USERID, self.SUWINGS_PASSWD)
     LOGINP.onRun()
+    
     CLASSINFOP = LectureInfoProcess(self.DRIVER, self.LOGGER)
     CLASSINFOP.onRun()
-    CLASSSEARCHP = LecturePlanProcess(self.DRIVER, self.LOGGER)
-    CLASSSEARCHP.onRun()
-    COREP = LectureCoreProcess(self.DRIVER, self.LOGGER)
-    COREP.onRun()
+    
+    SCANP = LectureScanProcess(self.DRIVER, self.LOGGER)
+    SCANP.onRun()

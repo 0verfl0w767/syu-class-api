@@ -18,10 +18,13 @@ import json
 from syuclass.utils.logger import Logger
 
 class API:
-  def __init__(self, PATH_NAME: str, LOGGER: Logger):
+  def __init__(self, LOGGER: Logger, DIR_NAME: str, PATH_NAME: str):
     self.LOGGER = LOGGER
     
-    self.API_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../data/' + PATH_NAME + '.json'))
+    if not os.path.exists(os.path.join(os.path.dirname(__file__), "../../data/" + DIR_NAME)):
+      os.makedirs(os.path.join(os.path.dirname(__file__), "../../data/" + DIR_NAME))
+    
+    self.API_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../data/" + DIR_NAME + "/" + PATH_NAME + ".json"))
     self.API_DATA = []
   
   def apiWrite(self, rawClassInfo: str) -> None:

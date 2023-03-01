@@ -66,8 +66,8 @@ class LoginProcess(BaseProcess):
     time.sleep(2)
     
     if not self.isLogined():
-      self.LOGGER.debuggerInfo("Login failed...")
+      self.LOGGER.debuggerInfo("LoginProcess failed...")
       self.DRIVER.quit()
       sys.exit() # self.DRIVER.quit() ISSUE -> Driver still running
 
-    self.LOGGER.debuggerInfo("Login succeeded...")
+    self.LOGGER.debuggerInfo("LoginProcess succeeded...")

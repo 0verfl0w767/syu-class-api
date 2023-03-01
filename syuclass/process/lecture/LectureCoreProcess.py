@@ -25,11 +25,13 @@ from syuclass.utils.api import API
 from syuclass.utils.logger import Logger
 
 class LectureCoreProcess(BaseProcess):
-  def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger):
+  def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger, DIR_NAME: str, PATH_NAME: str):
     self.DRIVER = DRIVER
     self.LOGGER = LOGGER
+    self.DIR_NAME = DIR_NAME
+    self.PATH_NAME = PATH_NAME
     
-    self.API = API('syu_api', LOGGER)
+    self.API = API(LOGGER, DIR_NAME, PATH_NAME)
   
   # Selenium + BeautifulSoup
   def onRun(self) -> None:
@@ -44,6 +46,9 @@ class LectureCoreProcess(BaseProcess):
     
     self.LOGGER.debuggerInfo(f"{MAX} classes were searched...")
     self.LOGGER.debuggerInfo(f"It will run around {X} times...")
+    
+    if MAX == 0:
+      self.LOGGER.info("This undergraduate program has been abolished...")
 
     while True:
       tr_count = 0
@@ -97,6 +102,7 @@ class LectureCoreProcess(BaseProcess):
         
         self.API.apiWrite(rawClassInfo)
         
+        self.LOGGER.debuggerInfo(self.DIR_NAME + " / " + self.PATH_NAME)
         self.LOGGER.progress(int(rawClassInfo[0]), MAX, "Progress:", 1, 50)
         self.LOGGER.debuggerInfo(text)
     
