@@ -18,36 +18,48 @@ import json
 from syuclass.utils.logger import Logger
 
 class API:
-  def __init__(self, LOGGER: Logger, DIR_NAME: str, PATH_NAME: str):
+  def __init__(self, LOGGER: Logger):
     self.LOGGER = LOGGER
     
-    if not os.path.exists(os.path.join(os.path.dirname(__file__), "../../data/" + DIR_NAME)):
-      os.makedirs(os.path.join(os.path.dirname(__file__), "../../data/" + DIR_NAME))
-    
-    self.API_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../data/" + DIR_NAME + "/" + PATH_NAME + ".json"))
-    self.API_DATA = []
+    self.apiData = []
   
-  def apiWrite(self, rawClassInfo: str) -> None:
-    self.API_DATA.append({
-      "순번": rawClassInfo[0],
-      "강좌번호": rawClassInfo[2],
-      "과목코드": rawClassInfo[3],
-      "과목명": rawClassInfo[4],
-      "학부(과)": rawClassInfo[5],
-      "학년": rawClassInfo[7],
-      "이수구분": rawClassInfo[8],
-      "영역구분": rawClassInfo[9],
-      "학점": rawClassInfo[10],
-      "교수명": "" if not rawClassInfo[13] else rawClassInfo[13],
-      "수업시간/장소": "" if not rawClassInfo[14] else rawClassInfo[14],
+  def lectureNameWrite(self, college: str, undergraduate: str, identification: int) -> None:
+    self.apiData.append({
+      "단과대학": college,
+      "학부(과)": undergraduate,
+      "식별번호": identification,
     })
   
-  def jsonWrite(self) -> None:
-    API_JSON = {}
-    API_JSON["time"] = self.LOGGER.getTime()
-    API_JSON["api"] = self.API_DATA
+  def lectureInfoWrite(self, rawLectureInfo: str) -> None:
+    self.apiData.append({
+      "순번": rawLectureInfo[0],
+      "강좌번호": rawLectureInfo[2],
+      "과목코드": rawLectureInfo[3],
+      "과목명": rawLectureInfo[4],
+      "학부(과)": rawLectureInfo[5],
+      "학년": rawLectureInfo[7],
+      "이수구분": rawLectureInfo[8],
+      "영역구분": rawLectureInfo[9],
+      "학점": rawLectureInfo[10],
+      "교수명": "" if not rawLectureInfo[13] else rawLectureInfo[13],
+      "수업시간/장소": "" if not rawLectureInfo[14] else rawLectureInfo[14],
+      "수업시간": "" if not rawLectureInfo[15] else rawLectureInfo[15],
+      "장소": "" if not rawLectureInfo[16] else rawLectureInfo[16],
+    })
+  
+  def jsonWrite(self, dirName: str, pathName: str) -> None:
+    DATA_PATH = "../../data/"
+    
+    if not os.path.exists(os.path.join(os.path.dirname(__file__), DATA_PATH + dirName)):
+      os.makedirs(os.path.join(os.path.dirname(__file__), DATA_PATH + dirName))
+    
+    self.API_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), DATA_PATH + dirName + "/" + pathName + ".json"))
+    
+    apiJson = {}
+    apiJson["time"] = self.LOGGER.getTime()
+    apiJson["api"] = self.apiData
     
     with open(self.API_PATH, "w", encoding = "utf-8") as f:
-      json.dump(API_JSON, f, ensure_ascii = False, indent = 2)
+      json.dump(apiJson, f, ensure_ascii = False, indent = 2)
     
     self.LOGGER.info("Check the API file: " + self.API_PATH)

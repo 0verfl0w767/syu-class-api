@@ -31,7 +31,7 @@ class LectureCoreProcess(BaseProcess):
     self.DIR_NAME = DIR_NAME
     self.PATH_NAME = PATH_NAME
     
-    self.API = API(LOGGER, DIR_NAME, PATH_NAME)
+    self.API = API(LOGGER)
   
   # Selenium + BeautifulSoup
   def onRun(self) -> None:
@@ -66,7 +66,7 @@ class LectureCoreProcess(BaseProcess):
       for tr in soup.select("tbody[id=\"gdM0_F0_body_tbody\"] tr"):
         tr_count += 1
         td_index = -1
-        rawClassInfo = []
+        rawLectureInfo = []
         text = ""
         
         if (tr_count == 22):
@@ -81,15 +81,15 @@ class LectureCoreProcess(BaseProcess):
         
         for td in tr.select("td"):
           td_index += 1
-          rawClassInfo.append(td.text)
+          rawLectureInfo.append(td.text)
           
-          if rawClassInfo[0] == "":
+          if rawLectureInfo[0] == "":
             break
           
-          if around_time == X and int(rawClassInfo[0]) <= around_time * 21:
+          if around_time == X and int(rawLectureInfo[0]) <= around_time * 21:
             break
           
-          if int(rawClassInfo[0]) == MAX:
+          if int(rawLectureInfo[0]) == MAX:
             maxStatus = True
           
           if td_index == 1 or td_index == 6 or td_index == 11 or td_index == 12 or td_index > 14:
@@ -100,10 +100,11 @@ class LectureCoreProcess(BaseProcess):
         if not text:
           continue
         
-        self.API.apiWrite(rawClassInfo)
+        self.API.lectureInfoWrite(rawLectureInfo)
         
         self.LOGGER.debuggerInfo(self.DIR_NAME + " / " + self.PATH_NAME)
-        self.LOGGER.progress(int(rawClassInfo[0]), MAX, "Progress:", 1, 50)
+        self.LOGGER.progress(int(rawLectureInfo[0]), MAX, "Progress:", 1, 50)
         self.LOGGER.debuggerInfo(text)
     
-    self.API.jsonWrite()
+    self.API.jsonWrite("전체대학", self.PATH_NAME)
+    self.API.jsonWrite(self.DIR_NAME, self.PATH_NAME)

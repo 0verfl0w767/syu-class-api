@@ -21,12 +21,15 @@ from selenium.webdriver.common.by import By
 from syuclass.process.BaseProcess import BaseProcess
 from syuclass.process.lecture.LectureCoreProcess import LectureCoreProcess
 from syuclass.process.lecture.LecturePlanProcess import LecturePlanProcess
+from syuclass.utils.api import API
 from syuclass.utils.logger import Logger
 
 class LectureScanProcess(BaseProcess):
   def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger):
     self.DRIVER = DRIVER
     self.LOGGER = LOGGER
+    
+    self.API = API(LOGGER)
   
   def onRun(self) -> None:
     # LOADING ISSUE -> Page not loaded
@@ -39,6 +42,7 @@ class LectureScanProcess(BaseProcess):
     self.DRIVER.find_element(By.XPATH, "//*[@id=\"sbF_COLG_CD\"]").click()
     
     soup = BeautifulSoup(self.DRIVER.page_source, 'html.parser')
+    identification = 0
     
     for collegeTD in soup.select("table[id=\"sbF_COLG_CD_itemTable_main\"] tbody tr td"):
       if (collegeTD["id"] == "sbF_COLG_CD_itemTable_0"):
@@ -56,12 +60,18 @@ class LectureScanProcess(BaseProcess):
         if (undergraduateTD["id"] == "sbF_FCLT_CD_itemTable_0"):
           continue
         
+        identification += 1
+        
         LPP = LecturePlanProcess(self.DRIVER, self.LOGGER, collegeTD["id"], undergraduateTD["id"])
         LPP.onRun()
         
         LCP = LectureCoreProcess(self.DRIVER, self.LOGGER, collegeTD.text, undergraduateTD.text)
         LCP.onRun()
+        
+        self.API.lectureNameWrite(collegeTD.text, undergraduateTD.text, identification)
       
       self.DRIVER.find_element(By.XPATH, "//*[@id=\"sbF_COLG_CD\"]").click()
+    
+    self.API.jsonWrite(".", "학부(과)")
     
     self.LOGGER.debuggerInfo("LectureScanProcess succeeded...")
