@@ -22,8 +22,9 @@ from syuclass.process.BaseProcess import BaseProcess
 from syuclass.utils.logger import Logger
 
 class LecturePlanProcess(BaseProcess):
-  def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger, COLLEGE: str, UNDERGRADUATE: str):
+  def __init__(self, DRIVER: webdriver.Chrome, OPTIONS: dict, LOGGER: Logger, COLLEGE: str, UNDERGRADUATE: str):
     self.DRIVER = DRIVER
+    self.OPTIONS = OPTIONS
     self.LOGGER = LOGGER
     self.COLLEGE = COLLEGE
     self.UNDERGRADUATE = UNDERGRADUATE
@@ -43,10 +44,14 @@ class LecturePlanProcess(BaseProcess):
   def setSemester(self, semester) -> None:
     self.DRIVER.find_element(By.XPATH, "//*[@id=\"sbF_SHTM\"]").click()
     
-    # 1학기 정규 //*[@id="sbF_SHTM_itemTable_0"]
-    # 1학기 계절 //*[@id="sbF_SHTM_itemTable_1"]
-    # 2학기 정규 //*[@id="sbF_SHTM_itemTable_2"]
-    # 2학기 계절 //*[@id="sbF_SHTM_itemTable_3"]
+    SEMESTER_NUM = {
+      "1학기 정규": "0",
+      "1학기 계절": "1",
+      "2학기 정규": "2",
+      "2학기 계절": "3",
+    }
+    
+    semester = "//*[@id=\"sbF_SHTM_itemTable_" + SEMESTER_NUM[semester] +"\"]"
     
     self.DRIVER.find_element(By.XPATH, semester).click()
 
@@ -85,8 +90,8 @@ class LecturePlanProcess(BaseProcess):
     # self.DRIVER.switch_to.frame("iframe1")
     # self.DRIVER.switch_to.frame("ifrForm")
 
-    self.setYear("3")
-    self.setSemester("//*[@id=\"sbF_SHTM_itemTable_0\"]")
+    self.setYear(self.OPTIONS["year"][-1])
+    self.setSemester(self.OPTIONS["semester"])
     self.setCollege("//*[@id=\"" + self.COLLEGE + "\"]")
     self.setUndergraduate("//*[@id=\"" + self.UNDERGRADUATE + "\"]")
     self.setGrade("//*[@id=\"sbF_GRDE_itemTable_0\"]")

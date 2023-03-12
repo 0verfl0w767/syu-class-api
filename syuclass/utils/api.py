@@ -18,7 +18,8 @@ import json
 from syuclass.utils.logger import Logger
 
 class API:
-  def __init__(self, LOGGER: Logger):
+  def __init__(self, OPTIONS: dict, LOGGER: Logger):
+    self.OPTIONS = OPTIONS
     self.LOGGER = LOGGER
     
     self.apiData = []
@@ -49,11 +50,13 @@ class API:
   
   def jsonWrite(self, dirName: str, pathName: str) -> None:
     DATA_PATH = "../../data/"
+    YS_PATH = self.OPTIONS["year"] + "/" + self.OPTIONS["semester"] + "/"
+    REAL_PATH = DATA_PATH + YS_PATH
     
-    if not os.path.exists(os.path.join(os.path.dirname(__file__), DATA_PATH + dirName)):
-      os.makedirs(os.path.join(os.path.dirname(__file__), DATA_PATH + dirName))
+    if not os.path.exists(os.path.join(os.path.dirname(__file__), REAL_PATH + dirName)):
+      os.makedirs(os.path.join(os.path.dirname(__file__), REAL_PATH + dirName))
     
-    self.API_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), DATA_PATH + dirName + "/" + pathName + ".json"))
+    self.API_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), REAL_PATH + dirName + "/" + pathName + ".json"))
     
     apiJson = {}
     apiJson["time"] = self.LOGGER.getTime()
@@ -62,4 +65,4 @@ class API:
     with open(self.API_PATH, "w", encoding = "utf-8") as f:
       json.dump(apiJson, f, ensure_ascii = False, indent = 2)
     
-    self.LOGGER.info("Check the API file: " + self.API_PATH)
+    self.LOGGER.info("Check the file: " + self.API_PATH)

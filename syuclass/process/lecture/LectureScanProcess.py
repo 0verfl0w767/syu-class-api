@@ -25,11 +25,12 @@ from syuclass.utils.api import API
 from syuclass.utils.logger import Logger
 
 class LectureScanProcess(BaseProcess):
-  def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger):
+  def __init__(self, DRIVER: webdriver.Chrome, OPTIONS: dict, LOGGER: Logger):
     self.DRIVER = DRIVER
+    self.OPTIONS = OPTIONS
     self.LOGGER = LOGGER
     
-    self.API = API(LOGGER)
+    self.API = API(OPTIONS, LOGGER)
   
   def onRun(self) -> None:
     # LOADING ISSUE -> Page not loaded
@@ -62,10 +63,10 @@ class LectureScanProcess(BaseProcess):
         
         identification += 1
         
-        LPP = LecturePlanProcess(self.DRIVER, self.LOGGER, collegeTD["id"], undergraduateTD["id"])
+        LPP = LecturePlanProcess(self.DRIVER, self.OPTIONS, self.LOGGER, collegeTD["id"], undergraduateTD["id"])
         LPP.onRun()
         
-        LCP = LectureCoreProcess(self.DRIVER, self.LOGGER, collegeTD.text, undergraduateTD.text)
+        LCP = LectureCoreProcess(self.DRIVER, self.OPTIONS, self.LOGGER, collegeTD.text, undergraduateTD.text)
         LCP.onRun()
         
         self.API.lectureNameWrite(collegeTD.text, undergraduateTD.text, identification)

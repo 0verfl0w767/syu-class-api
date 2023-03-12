@@ -25,13 +25,14 @@ from syuclass.utils.api import API
 from syuclass.utils.logger import Logger
 
 class LectureCoreProcess(BaseProcess):
-  def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger, DIR_NAME: str, PATH_NAME: str):
+  def __init__(self, DRIVER: webdriver.Chrome, OPTIONS: dict, LOGGER: Logger, DIR_NAME: str, PATH_NAME: str):
     self.DRIVER = DRIVER
+    self.OPTIONS = OPTIONS
     self.LOGGER = LOGGER
     self.DIR_NAME = DIR_NAME
     self.PATH_NAME = PATH_NAME
     
-    self.API = API(LOGGER)
+    self.API = API(OPTIONS, LOGGER)
   
   # Selenium + BeautifulSoup
   def onRun(self) -> None:

@@ -22,11 +22,10 @@ from syuclass.process.BaseProcess import BaseProcess
 from syuclass.utils.logger import Logger
 
 class LoginProcess(BaseProcess):
-  def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger, SUWINGS_USERID: str, SUWINGS_PASSWD: str):
+  def __init__(self, DRIVER: webdriver.Chrome, OPTIONS: dict, LOGGER: Logger):
     self.DRIVER = DRIVER
+    self.OPTIONS = OPTIONS
     self.LOGGER = LOGGER
-    self.SUWINGS_USERID = SUWINGS_USERID
-    self.SUWINGS_PASSWD = SUWINGS_PASSWD
   
   def isLogined(self) -> bool:
     status = False
@@ -48,13 +47,13 @@ class LoginProcess(BaseProcess):
     password = self.DRIVER.find_element(By.XPATH, "//*[@id=\"edPass\"]")
 
     userid.click()
-    userid.send_keys(self.SUWINGS_USERID)
+    userid.send_keys(self.OPTIONS["userid"])
 
     self.DRIVER.implicitly_wait(2)
     # time.sleep(1)
 
     password.click()
-    password.send_keys(self.SUWINGS_PASSWD)
+    password.send_keys(self.OPTIONS["passwd"])
 
     self.DRIVER.implicitly_wait(2)
     # time.sleep(1)

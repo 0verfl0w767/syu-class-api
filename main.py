@@ -14,13 +14,15 @@
 #
 from syuclass.process.ProcessManager import ProcessManager
 
-CHROMIUM_PATH = "C:\\Users\\kim\\Desktop\\Chromium.exe" # Your chromium path
-TARGET_URL = "https://suwings.syu.ac.kr/sso/login.jsp"
-
-SUWINGS_USERID = "test1234" # Your suwings userid
-SUWINGS_PASSWD = "test1234" # Your suwings passwd
+SYU_API_OPTIONS = {
+  "userid": "test1234",
+  "passwd": "test1234",
+  "year": "2023",
+  "semester": "1학기 정규",
+  # 1학기 정규, 1학기 계절, 2학기 정규, 2학기 계절
+}
 
 DEBUGGER = False # Default: False
 
-PROCESSMANAGER = ProcessManager(CHROMIUM_PATH, TARGET_URL, SUWINGS_USERID, SUWINGS_PASSWD, DEBUGGER)
+PROCESSMANAGER = ProcessManager(SYU_API_OPTIONS, DEBUGGER)
 PROCESSMANAGER.onRun()

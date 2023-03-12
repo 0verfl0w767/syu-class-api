@@ -12,40 +12,27 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-
+from syuclass.process.start.StartProcess import StartProcess
 from syuclass.process.login.LoginProcess import LoginProcess
 from syuclass.process.lecture.LectureInfoProcess import LectureInfoProcess
-from syuclass.process.lecture.LecturePlanProcess import LecturePlanProcess
-from syuclass.process.lecture.LectureCoreProcess import LectureCoreProcess
 from syuclass.process.lecture.LectureScanProcess import LectureScanProcess
 from syuclass.utils.logger import Logger
 
 class ProcessManager:
-  def __init__(self, CHROMIUM_PATH: str, TARGET_URL: str, SUWINGS_USERID: str, SUWINGS_PASSWD: str, DEBUGGER: bool):
-    self.SUWINGS_USERID = SUWINGS_USERID
-    self.SUWINGS_PASSWD = SUWINGS_PASSWD
-    self.DEBUGGER = DEBUGGER
+  def __init__(self, OPTIONS: dict, DEBUGGER: bool):
+    self.OPTIONS = OPTIONS
     
     self.LOGGER = Logger(DEBUGGER)
-    
-    options = Options()
-    options.add_argument("headless")
-    options.add_argument("disable-gpu")
-    # options.add_argument("disable-infobars")
-    # options.add_argument("--disable-extensions")
-    # options.add_argument("--start-maximized")
-
-    self.DRIVER = webdriver.Chrome(CHROMIUM_PATH, options = options)
-    self.DRIVER.get(TARGET_URL)
       
   def onRun(self) -> None:
-    LOGINP = LoginProcess(self.DRIVER, self.LOGGER, self.SUWINGS_USERID, self.SUWINGS_PASSWD)
-    LOGINP.onRun()
+    SP = StartProcess(self.OPTIONS, self.LOGGER)
+    SP.onRun()
     
-    CLASSINFOP = LectureInfoProcess(self.DRIVER, self.LOGGER)
-    CLASSINFOP.onRun()
+    LP = LoginProcess(SP.DRIVER, self.OPTIONS, self.LOGGER)
+    LP.onRun()
     
-    SCANP = LectureScanProcess(self.DRIVER, self.LOGGER)
-    SCANP.onRun()
+    LIP = LectureInfoProcess(SP.DRIVER, self.LOGGER)
+    LIP.onRun()
+    
+    LSP = LectureScanProcess(SP.DRIVER, self.OPTIONS, self.LOGGER)
+    LSP.onRun()
