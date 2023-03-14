@@ -22,7 +22,7 @@ from selenium.webdriver.common.keys import Keys
 
 from syuclass.process.BaseProcess import BaseProcess
 from syuclass.utils.api import API
-from syuclass.utils.logger import Logger
+from syuclass.utils.Logger import Logger
 
 class LectureCoreProcess(BaseProcess):
   def __init__(self, DRIVER: webdriver.Chrome, OPTIONS: dict, LOGGER: Logger, DIR_NAME: str, PATH_NAME: str):

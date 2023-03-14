@@ -19,7 +19,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from syuclass.process.BaseProcess import BaseProcess
-from syuclass.utils.logger import Logger
+from syuclass.utils.Logger import Logger
 
 class LoginProcess(BaseProcess):
   def __init__(self, DRIVER: webdriver.Chrome, OPTIONS: dict, LOGGER: Logger):

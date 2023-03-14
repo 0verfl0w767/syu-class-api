@@ -19,7 +19,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from syuclass.process.BaseProcess import BaseProcess
-from syuclass.utils.logger import Logger
+from syuclass.utils.Logger import Logger
 
 class LecturePlanProcess(BaseProcess):
   def __init__(self, DRIVER: webdriver.Chrome, OPTIONS: dict, LOGGER: Logger, COLLEGE: str, UNDERGRADUATE: str):
@@ -36,7 +36,7 @@ class LecturePlanProcess(BaseProcess):
     GET_YEAR.send_keys(Keys.ARROW_RIGHT)
     GET_YEAR.send_keys(Keys.ARROW_RIGHT)
     GET_YEAR.send_keys(Keys.BACK_SPACE)
-    GET_YEAR.send_keys(year)
+    GET_YEAR.send_keys(year[-1])
 
     self.DRIVER.implicitly_wait(2)
     #time.sleep(1)
@@ -90,7 +90,7 @@ class LecturePlanProcess(BaseProcess):
     # self.DRIVER.switch_to.frame("iframe1")
     # self.DRIVER.switch_to.frame("ifrForm")
 
-    self.setYear(self.OPTIONS["year"][-1])
+    self.setYear(self.OPTIONS["year"])
     self.setSemester(self.OPTIONS["semester"])
     self.setCollege("//*[@id=\"" + self.COLLEGE + "\"]")
     self.setUndergraduate("//*[@id=\"" + self.UNDERGRADUATE + "\"]")

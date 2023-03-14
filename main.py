@@ -12,17 +12,11 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
+from syuclass.config.ConfigManager import ConfigManager
 from syuclass.process.ProcessManager import ProcessManager
 
-SYU_API_OPTIONS = {
-  "userid": "test1234",
-  "passwd": "test1234",
-  "year": "2023",
-  "semester": "1학기 정규",
-  # 1학기 정규, 1학기 계절, 2학기 정규, 2학기 계절
-}
-
+CONFIG_OPTIONS = ConfigManager().onRun()
 DEBUGGER = False # Default: False
 
-PROCESSMANAGER = ProcessManager(SYU_API_OPTIONS, DEBUGGER)
+PROCESSMANAGER = ProcessManager(CONFIG_OPTIONS, DEBUGGER)
 PROCESSMANAGER.onRun()

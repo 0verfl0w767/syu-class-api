@@ -22,7 +22,7 @@ from syuclass.process.BaseProcess import BaseProcess
 from syuclass.process.lecture.LectureCoreProcess import LectureCoreProcess
 from syuclass.process.lecture.LecturePlanProcess import LecturePlanProcess
 from syuclass.utils.api import API
-from syuclass.utils.logger import Logger
+from syuclass.utils.Logger import Logger
 
 class LectureScanProcess(BaseProcess):
   def __init__(self, DRIVER: webdriver.Chrome, OPTIONS: dict, LOGGER: Logger):

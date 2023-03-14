@@ -15,7 +15,7 @@
 import os
 import json
 
-from syuclass.utils.logger import Logger
+from syuclass.utils.Logger import Logger
 
 class API:
   def __init__(self, OPTIONS: dict, LOGGER: Logger):
@@ -59,7 +59,7 @@ class API:
     self.API_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), REAL_PATH + dirName + "/" + pathName + ".json"))
     
     apiJson = {}
-    apiJson["time"] = self.LOGGER.getTime()
+    # apiJson["time"] = self.LOGGER.getTime()
     apiJson["api"] = self.apiData
     
     with open(self.API_PATH, "w", encoding = "utf-8") as f:

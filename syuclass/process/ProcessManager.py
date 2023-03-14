@@ -16,7 +16,7 @@ from syuclass.process.start.StartProcess import StartProcess
 from syuclass.process.login.LoginProcess import LoginProcess
 from syuclass.process.lecture.LectureInfoProcess import LectureInfoProcess
 from syuclass.process.lecture.LectureScanProcess import LectureScanProcess
-from syuclass.utils.logger import Logger
+from syuclass.utils.Logger import Logger
 
 class ProcessManager:
   def __init__(self, OPTIONS: dict, DEBUGGER: bool):

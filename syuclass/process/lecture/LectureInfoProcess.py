@@ -16,7 +16,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from syuclass.process.BaseProcess import BaseProcess
-from syuclass.utils.logger import Logger
+from syuclass.utils.Logger import Logger
 
 class LectureInfoProcess(BaseProcess):
   def __init__(self, DRIVER: webdriver.Chrome, LOGGER: Logger):
