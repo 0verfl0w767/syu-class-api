@@ -12,11 +12,10 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
-import time
-
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 from syuclass.process.BaseProcess import BaseProcess
 from syuclass.process.lecture.LectureCoreProcess import LectureCoreProcess
@@ -33,14 +32,12 @@ class LectureScanProcess(BaseProcess):
     self.API = API(OPTIONS, LOGGER)
   
   def onRun(self) -> None:
-    # LOADING ISSUE -> Page not loaded
-    # self.DRIVER.implicitly_wait(3)
-    time.sleep(2)
-
     self.DRIVER.switch_to.frame("iframe1")
     self.DRIVER.switch_to.frame("ifrForm")
-
-    self.DRIVER.find_element(By.XPATH, "//*[@id=\"sbF_COLG_CD\"]").click()
+    
+    WebDriverWait(self.DRIVER, 10).until(
+      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_COLG_CD\"]")
+    ).click()
     
     soup = BeautifulSoup(self.DRIVER.page_source, 'html.parser')
     identification = 0
@@ -49,11 +46,13 @@ class LectureScanProcess(BaseProcess):
       if (collegeTD["id"] == "sbF_COLG_CD_itemTable_0"):
         continue
       
-      self.DRIVER.find_element(By.XPATH, "//*[@id=\"" + collegeTD["id"] + "\"]").click()
+      WebDriverWait(self.DRIVER, 10).until(
+        lambda driver: driver.find_element(By.XPATH, "//*[@id=\"" + collegeTD["id"] + "\"]")
+      ).click()
       
-      #time.sleep(1)
-      
-      self.DRIVER.find_element(By.XPATH, "//*[@id=\"sbF_FCLT_CD\"]").click()
+      WebDriverWait(self.DRIVER, 10).until(
+        lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_FCLT_CD\"]")
+      ).click()
       
       soup = BeautifulSoup(self.DRIVER.page_source, 'html.parser')
       
@@ -71,7 +70,9 @@ class LectureScanProcess(BaseProcess):
         
         self.API.lectureNameWrite(collegeTD.text, undergraduateTD.text, identification)
       
-      self.DRIVER.find_element(By.XPATH, "//*[@id=\"sbF_COLG_CD\"]").click()
+      WebDriverWait(self.DRIVER, 10).until(
+        lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_COLG_CD\"]")
+      ).click()
     
     self.API.jsonWrite(".", "학부(과)")
     

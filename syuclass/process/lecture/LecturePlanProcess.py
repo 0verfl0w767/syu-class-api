@@ -12,8 +12,6 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
-import time
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -85,7 +83,7 @@ class LecturePlanProcess(BaseProcess):
   def onRun(self) -> None:
     # LOADING ISSUE -> Page not loaded
     # self.DRIVER.implicitly_wait(3)
-    time.sleep(2)
+    # time.sleep(2)
 
     # self.DRIVER.switch_to.frame("iframe1")
     # self.DRIVER.switch_to.frame("ifrForm")

@@ -14,7 +14,6 @@
 #
 import math
 import time
-
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -34,9 +33,8 @@ class LectureCoreProcess(BaseProcess):
     
     self.API = API(OPTIONS, LOGGER)
   
-  # Selenium + BeautifulSoup
   def onRun(self) -> None:
-    time.sleep(3)
+    time.sleep(0.7) # not solved..
     
     self.DRIVER.switch_to.frame("ifrForm")
     

@@ -13,10 +13,10 @@
 #  @license MIT LICENSE
 #
 import sys
-import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 from syuclass.process.BaseProcess import BaseProcess
 from syuclass.utils.Logger import Logger
@@ -27,46 +27,90 @@ class LoginProcess(BaseProcess):
     self.OPTIONS = OPTIONS
     self.LOGGER = LOGGER
   
-  def isLogined(self) -> bool:
-    status = False
-    
-    try:
-      self.LOGGER.info(self.DRIVER.switch_to.alert.text)
-      status = False
-    except:
-      status = True
-    
-    return status
-  
   def onRun(self) -> None:
-    # LOADING ISSUE -> Cannot read properties of undefined (reading 'hybridEncrypt') : Not Loading Script..
-    # self.DRIVER.implicitly_wait(2)
-    time.sleep(2)
+    # webcrypto not loaded:
+    # {
+    #   "checkBrowser": {},
+    #   "getBrowserInfo": {},
+    #   "getBrowserVersion": {},
+    #   "getPlatformInfo": {},
+    #   "isLoadModule": {},
+    #   "loadModule": {},
+    #   "loadPfxFileIframe": {},
+    #   "loadScript": {},
+    #   "namespace": {},
+    #   "scriptVersion": "3.0.0.6",
+    # }
     
-    userid = self.DRIVER.find_element(By.XPATH, "//*[@id=\"edId\"]")
-    password = self.DRIVER.find_element(By.XPATH, "//*[@id=\"edPass\"]")
+    # webcrypto loaded
+    # {
+    #   "checkBrowser": {},
+    #   "e2e": {
+    #       "checkModuleVersion": {},
+    #       "getLastErrMsg": {},
+    #       "getPasswordKeboardSession": {},
+    #       "getVersion": {},
+    #       "hashMessage": {},
+    #       "hybridEncrypt": {},
+    #       "hybridEncryptKeyboardSession": {},
+    #       "initializeModule": {},
+    #       "sessionDecrypt": {},
+    #       "sessionEncrypt": {},
+    #       "sessionFinalize": {},
+    #       "setSessionTime": {},
+    #       "web": {
+    #           "getLastErrMsg": {},
+    #           "getPasswordKeboardSession": {},
+    #           "hashMessage": {},
+    #           "hybridEncrypt": {},
+    #           "hybridEncryptKeyboardSession": {},
+    #           "sessionDecrypt": {},
+    #           "sessionEncrypt": {},
+    #           "sessionFinalize": {},
+    #           "setSessionTime": {},
+    #       },
+    #   },
+    #   "getBrowserInfo": {},
+    #   "getBrowserVersion": {},
+    #   "getPlatformInfo": {},
+    #   "isLoadModule": {},
+    #   "loadModule": {},
+    #   "loadPfxFileIframe": {},
+    #   "loadScript": {},
+    #   "msg": {"getLanguageConfig": {}, "getMessage": {}, "setLanguageConfig": {}},
+    #   "namespace": {},
+    #   "scriptVersion": "3.0.0.6",
+    # }
+    WebDriverWait(self.DRIVER, 10).until(
+      lambda driver: driver.execute_script("return webcrypto").get('e2e') != None
+    )
+    
+    userid = WebDriverWait(self.DRIVER, 10).until(
+      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"edId\"]")
+    )
+    password = WebDriverWait(self.DRIVER, 10).until(
+      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"edPass\"]")
+    )
+    login_button = WebDriverWait(self.DRIVER, 10).until(
+      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"imgLogin\"]")
+    )
 
     userid.click()
     userid.send_keys(self.OPTIONS["userid"])
 
-    self.DRIVER.implicitly_wait(2)
-    # time.sleep(1)
-
     password.click()
     password.send_keys(self.OPTIONS["passwd"])
-
-    self.DRIVER.implicitly_wait(2)
-    # time.sleep(1)
     
-    login_button = self.DRIVER.find_element(By.XPATH, "//*[@id=\"imgLogin\"]")
     login_button.click()
     
-    # LOADING ISSUE -> Page not loaded
-    time.sleep(2)
-    
-    if not self.isLogined():
-      self.LOGGER.debuggerInfo("LoginProcess failed...")
-      self.DRIVER.quit()
-      sys.exit() # self.DRIVER.quit() ISSUE -> Driver still running
-
-    self.LOGGER.debuggerInfo("LoginProcess succeeded...")
+    # SPEED ISSUE WHY
+    # try:
+    #   WebDriverWait(self.DRIVER, 10).until(EC.alert_is_present())
+      
+    #   self.LOGGER.info(self.DRIVER.switch_to.alert.text)
+    #   self.LOGGER.info("LoginProcess failed...")
+      
+    #   self.DRIVER.quit()
+    #   sys.exit()
+    # except:
+    #   self.LOGGER.info("LoginProcess succeeded...")

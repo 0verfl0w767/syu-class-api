@@ -50,4 +50,4 @@ class StartProcess(BaseProcess):
     self.DRIVER = webdriver.Chrome(CHROMIUM_PATH, options = options)
     self.DRIVER.get("https://suwings.syu.ac.kr/sso/login.jsp")
     
-    self.LOGGER.debuggerInfo("StartProcess succeeded...")
+    self.LOGGER.info("StartProcess succeeded...")
