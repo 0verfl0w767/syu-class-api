@@ -12,23 +12,11 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
-import datetime
-import time
-
 from syuclass.config.ConfigManager import ConfigManager
 from syuclass.process.ProcessManager import ProcessManager
 
 CONFIG_OPTIONS = ConfigManager().onRun()
 DEBUGGER = False # Default: False
 
-start = time.time()
-
 PROCESSMANAGER = ProcessManager(CONFIG_OPTIONS, DEBUGGER)
 PROCESSMANAGER.onRun()
-
-end = time.time()
-
-sec = (end - start)
-
-result = datetime.timedelta(seconds=sec)
-print(result)
