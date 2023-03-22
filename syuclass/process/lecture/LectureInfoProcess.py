@@ -28,6 +28,7 @@ class LectureInfoProcess(BaseProcess):
     WebDriverWait(self.DRIVER, 10).until(
       lambda driver: driver.find_element(By.XPATH, "//*[@id=\"treeview1_node_24\"]")
     ).click()
+    
     WebDriverWait(self.DRIVER, 10).until(
       lambda driver: driver.find_element(By.XPATH, "//*[@id=\"treeview1_node_25\"]/tbody/tr/td[3]")
     ).click()

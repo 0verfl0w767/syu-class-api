@@ -13,11 +13,11 @@
 #  @license MIT LICENSE
 #
 import math
-import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
 
 from syuclass.process.BaseProcess import BaseProcess
 from syuclass.utils.api import API
@@ -34,11 +34,13 @@ class LectureCoreProcess(BaseProcess):
     self.API = API(OPTIONS, LOGGER)
   
   def onRun(self) -> None:
-    time.sleep(0.7) # not solved..
+    WebDriverWait(self.DRIVER, 10).until(
+      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"opStatus\"]").text != '자료를 조회 중입니다.'
+    )
     
     self.DRIVER.switch_to.frame("ifrForm")
     
-    MAX = int(self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0_total_cnt\"]").text[:-1]) # [:3] -> [:-1]
+    MAX = int(self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0_total_cnt\"]").text[:-1])
     X = math.floor((MAX - 1) / 21)
 
     around_time = -1

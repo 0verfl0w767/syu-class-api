@@ -25,14 +25,18 @@ class ProcessManager:
     self.LOGGER = Logger(DEBUGGER)
       
   def onRun(self) -> None:
-    SP = StartProcess(self.OPTIONS, self.LOGGER)
-    SP.onRun()
-    
-    LP = LoginProcess(SP.DRIVER, self.OPTIONS, self.LOGGER)
-    LP.onRun()
-    
-    LIP = LectureInfoProcess(SP.DRIVER, self.LOGGER)
-    LIP.onRun()
-    
-    LSP = LectureScanProcess(SP.DRIVER, self.OPTIONS, self.LOGGER)
-    LSP.onRun()
+    try:
+      SP = StartProcess(self.OPTIONS, self.LOGGER)
+      SP.onRun()
+      
+      LP = LoginProcess(SP.DRIVER, self.OPTIONS, self.LOGGER)
+      LP.onRun()
+      
+      LIP = LectureInfoProcess(SP.DRIVER, self.LOGGER)
+      LIP.onRun()
+      
+      LSP = LectureScanProcess(SP.DRIVER, self.OPTIONS, self.LOGGER)
+      LSP.onRun()
+    except Exception as e:
+      self.LOGGER.info("An error occurred during processing...")
+      self.LOGGER.info(str(e))

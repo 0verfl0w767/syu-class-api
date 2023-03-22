@@ -29,6 +29,10 @@ class ConfigManager:
       return {
         "userid": JSON_DATA["userid"],
         "passwd": JSON_DATA["passwd"],
+        "check_year": JSON_DATA["check_year"],
+        "check_semester": JSON_DATA["check_semester"],
+        "check_grade": JSON_DATA["check_grade"],
         "year": JSON_DATA["year"],
         "semester": JSON_DATA["semester"],
+        "grade": JSON_DATA["grade"],
       }
