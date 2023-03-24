@@ -16,6 +16,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from syuclass.process.BaseProcess import BaseProcess
 from syuclass.utils.Logger import Logger
@@ -48,7 +49,7 @@ class LecturePlanProcess(BaseProcess):
   
   def setYear(self, year) -> None:
     GETYEAR = WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"ipF_ENTR_YY\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"ipF_ENTR_YY\"]"))
     )
     GETYEAR.click()
     
@@ -59,66 +60,72 @@ class LecturePlanProcess(BaseProcess):
   
   def setSemester(self, semester) -> None:
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_SHTM\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"sbF_SHTM\"]"))
     ).click()
     
     semester = "//*[@id=\"sbF_SHTM_itemTable_" + self.SEMESTER_NUM[semester] +"\"]"
     
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, semester)
+      EC.element_to_be_clickable((By.XPATH, semester))
     ).click()
   
   def setCollege(self, college) -> None:
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_COLG_CD\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"sbF_COLG_CD\"]"))
     ).click()
     
     college = "//*[@id=\"" + college + "\"]"
     
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, college)
+      EC.element_to_be_clickable((By.XPATH, college))
     ).click()
   
   def setUndergraduate(self, undergraduate) -> None:
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_FCLT_CD\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"sbF_FCLT_CD\"]"))
     ).click()
     
     undergraduate = "//*[@id=\"" + undergraduate + "\"]"
     
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, undergraduate)
+      EC.element_to_be_clickable((By.XPATH, undergraduate))
     ).click()
   
   def setGrade(self, grade) -> None:
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_GRDE\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"sbF_GRDE\"]"))
     ).click()
     
     grade = "//*[@id=\"sbF_GRDE_itemTable_" + self.GRADE_NUM[grade] + "\"]"
     
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, grade)
+      EC.element_to_be_clickable((By.XPATH, grade))
     ).click()
   
   def onRun(self) -> None:
-    if self.OPTIONS["check_year"]:
+    if not self.OPTIONS["check_year"]:
       self.setYear(self.OPTIONS["year"])
+      self.OPTIONS["check_year"] = True
     
-    if self.OPTIONS["check_semester"]:
+    if not self.OPTIONS["check_semester"]:
       self.setSemester(self.OPTIONS["semester"])
+      self.OPTIONS["check_semester"] = True
     
-    self.setCollege(self.COLLEGE)
+    if not self.OPTIONS["check_college"]:
+      self.setCollege(self.COLLEGE)
+      self.OPTIONS["check_college"] = True
+    
     self.setUndergraduate(self.UNDERGRADUATE)
     
-    if self.OPTIONS["check_grade"]:
+    if not self.OPTIONS["check_grade"]:
       self.setGrade(self.OPTIONS["grade"])
+      self.OPTIONS["check_grade"] = True
     
     self.DRIVER.switch_to.default_content()
     self.DRIVER.switch_to.frame("iframe1")
     
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"tgSelect\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"tgSelect\"]"))
     ).click()
     
     self.LOGGER.info("LecturePlanProcess succeeded...")

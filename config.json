@@ -1,9 +1,11 @@
 {
+  "headless": true,
   "userid": "test1234",
   "passwd": "test1234",
   "check_year": false,
   "check_semester": false,
-  "check_grade": true,
+  "check_college": false,
+  "check_grade": false,
   "year": "2023",
   "semester": "1학기 정규",
   "grade": "전체"

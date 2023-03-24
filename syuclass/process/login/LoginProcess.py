@@ -87,13 +87,13 @@ class LoginProcess(BaseProcess):
     )
     
     userid = WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"edId\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"edId\"]"))
     )
     password = WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"edPass\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"edPass\"]"))
     )
     login_button = WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"imgLogin\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"imgLogin\"]"))
     )
 
     userid.click()

@@ -15,6 +15,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from syuclass.process.BaseProcess import BaseProcess
 from syuclass.utils.Logger import Logger
@@ -26,11 +27,11 @@ class LectureInfoProcess(BaseProcess):
   
   def onRun(self) -> None:
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"treeview1_node_24\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"treeview1_node_24\"]"))
     ).click()
     
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"treeview1_node_25\"]/tbody/tr/td[3]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"treeview1_node_25\"]/tbody/tr/td[3]"))
     ).click()
     
     self.LOGGER.info("LectureInfoProcess succeeded...")

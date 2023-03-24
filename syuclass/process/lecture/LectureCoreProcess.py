@@ -40,15 +40,15 @@ class LectureCoreProcess(BaseProcess):
     
     self.DRIVER.switch_to.frame("ifrForm")
     
-    MAX = int(self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0_total_cnt\"]").text[:-1])
-    X = math.floor((MAX - 1) / 21)
+    LECTURES_COUNT = int(self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0_total_cnt\"]").text[:-1])
+    SCROLL_COUNT = math.floor((LECTURES_COUNT - 1) / 21)
 
     around_time = -1
     
-    self.LOGGER.debuggerInfo(f"{MAX} classes were searched...")
-    self.LOGGER.debuggerInfo(f"It will run around {X} times...")
+    self.LOGGER.debuggerInfo(f"{LECTURES_COUNT} classes were searched...")
+    self.LOGGER.debuggerInfo(f"It will run around {SCROLL_COUNT} times...")
     
-    if MAX == 0:
+    if LECTURES_COUNT == 0:
       self.LOGGER.info("This undergraduate program has been abolished...")
 
     while True:
@@ -58,7 +58,7 @@ class LectureCoreProcess(BaseProcess):
       
       self.LOGGER.debuggerInfo(f"Around {around_time} times...")
       
-      if around_time > X:
+      if around_time > SCROLL_COUNT:
         self.LOGGER.debuggerInfo("Exit the process...")
         break
       
@@ -70,11 +70,13 @@ class LectureCoreProcess(BaseProcess):
         rawLectureInfo = []
         text = ""
         
-        if (tr_count == 22):
-          self.DRIVER.find_element(By.XPATH, "//*[@id=\"gdM0_F0\"]").send_keys(Keys.PAGE_DOWN)
+        if tr_count == 22:
+          WebDriverWait(self.DRIVER, 10).until(
+            lambda driver: driver.find_element(By.XPATH, "//*[@id=\"gdM0_F0\"]")
+          ).send_keys(Keys.PAGE_DOWN)
           tr_count = 0
           
-          if around_time < X:
+          if around_time < SCROLL_COUNT:
             break
         
         if maxStatus:
@@ -87,10 +89,10 @@ class LectureCoreProcess(BaseProcess):
           if rawLectureInfo[0] == "":
             break
           
-          if around_time == X and int(rawLectureInfo[0]) <= around_time * 21:
+          if around_time == SCROLL_COUNT and int(rawLectureInfo[0]) <= around_time * 21:
             break
           
-          if int(rawLectureInfo[0]) == MAX:
+          if int(rawLectureInfo[0]) == LECTURES_COUNT:
             maxStatus = True
           
           if td_index == 1 or td_index == 6 or td_index == 11 or td_index == 12 or td_index > 14:
@@ -104,7 +106,7 @@ class LectureCoreProcess(BaseProcess):
         self.API.lectureInfoWrite(rawLectureInfo)
         
         self.LOGGER.debuggerInfo(self.DIR_NAME + " / " + self.PATH_NAME)
-        self.LOGGER.progress(int(rawLectureInfo[0]), MAX, "Progress:", 1, 50)
+        self.LOGGER.progress(int(rawLectureInfo[0]), LECTURES_COUNT, "Progress:", 1, 50)
         self.LOGGER.debuggerInfo(text)
     
     self.API.jsonWrite("전체대학", self.PATH_NAME)

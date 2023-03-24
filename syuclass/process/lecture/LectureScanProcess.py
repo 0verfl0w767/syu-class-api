@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from syuclass.process.BaseProcess import BaseProcess
 from syuclass.process.lecture.LectureCoreProcess import LectureCoreProcess
@@ -36,28 +37,30 @@ class LectureScanProcess(BaseProcess):
     self.DRIVER.switch_to.frame("ifrForm")
     
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_COLG_CD\"]")
+      EC.element_to_be_clickable((By.XPATH, "//*[@id=\"sbF_COLG_CD\"]"))
     ).click()
     
     soup = BeautifulSoup(self.DRIVER.page_source, 'html.parser')
     identification = 0
     
     for collegeTD in soup.select("table[id=\"sbF_COLG_CD_itemTable_main\"] tbody tr td"):
-      if (collegeTD["id"] == "sbF_COLG_CD_itemTable_0"):
+      if collegeTD["id"] == "sbF_COLG_CD_itemTable_0":
         continue
       
       WebDriverWait(self.DRIVER, 10).until(
-        lambda driver: driver.find_element(By.XPATH, "//*[@id=\"" + collegeTD["id"] + "\"]")
+        EC.element_to_be_clickable((By.XPATH, "//*[@id=\"" + collegeTD["id"] + "\"]"))
       ).click()
       
       WebDriverWait(self.DRIVER, 10).until(
-        lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_FCLT_CD\"]")
+        EC.element_to_be_clickable((By.XPATH, "//*[@id=\"sbF_FCLT_CD\"]"))
       ).click()
+      
+      self.OPTIONS["check_college"] = False
       
       soup = BeautifulSoup(self.DRIVER.page_source, 'html.parser')
       
       for undergraduateTD in soup.select("table[id=\"sbF_FCLT_CD_itemTable_main\"] tbody tr td"):
-        if (undergraduateTD["id"] == "sbF_FCLT_CD_itemTable_0"):
+        if undergraduateTD["id"] == "sbF_FCLT_CD_itemTable_0":
           continue
         
         identification += 1
@@ -71,7 +74,7 @@ class LectureScanProcess(BaseProcess):
         self.API.lectureNameWrite(collegeTD.text, undergraduateTD.text, identification)
       
       WebDriverWait(self.DRIVER, 10).until(
-        lambda driver: driver.find_element(By.XPATH, "//*[@id=\"sbF_COLG_CD\"]")
+        EC.element_to_be_clickable((By.XPATH, "//*[@id=\"sbF_COLG_CD\"]"))
       ).click()
     
     self.API.jsonWrite(".", "학부(과)")
