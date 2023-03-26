@@ -128,5 +128,3 @@ class LecturePlanProcess(BaseProcess):
       EC.element_to_be_clickable((By.XPATH, "//*[@id=\"tgSelect\"]"))
     ).click()
     
-    self.LOGGER.info("LecturePlanProcess succeeded...")
-    

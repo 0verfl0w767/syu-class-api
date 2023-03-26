@@ -12,22 +12,46 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
-import os
 import json
+import os
+import sys
+
+from syuclass.utils.Logger import Logger
 
 class ConfigManager:
-  def __init__(self):
-    pass
+  def __init__(self, DEBUGGER):
+    self.LOGGER = Logger(DEBUGGER)
   
   def onRun(self) -> dict:
     DATA_PATH = "../../"
     REAL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), DATA_PATH + "/config.json"))
     
+    if not os.path.exists(REAL_PATH):
+      configData = {
+        "dev": False,
+        "userid": "test1234",
+        "passwd": "test1234",
+        "check_year": False,
+        "check_semester": False,
+        "check_college": False,
+        "check_grade": False,
+        "year": "2023",
+        "semester": "1학기 정규",
+        "grade": "전체"
+      }
+      
+      with open(REAL_PATH, "w", encoding = "utf-8") as f:
+        json.dump(configData, f, ensure_ascii = False, indent = 2)
+      
+      self.LOGGER.info("Check the file: " + REAL_PATH)
+      self.LOGGER.info("Set the config.json data.")
+      sys.exit()
+      
     with open(REAL_PATH, "r", encoding = "utf-8") as f:
       JSON_DATA = json.load(f)
       
       return {
-        "headless": JSON_DATA["headless"],
+        "dev": JSON_DATA["dev"],
         "userid": JSON_DATA["userid"],
         "passwd": JSON_DATA["passwd"],
         "check_year": JSON_DATA["check_year"],

@@ -35,7 +35,7 @@ class LectureCoreProcess(BaseProcess):
   
   def onRun(self) -> None:
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"opStatus\"]").text != '자료를 조회 중입니다.'
+      lambda driver: driver.find_element(By.XPATH, "//*[@id=\"opStatus\"]").text != "자료를 조회 중입니다."
     )
     
     self.DRIVER.switch_to.frame("ifrForm")
@@ -45,11 +45,12 @@ class LectureCoreProcess(BaseProcess):
 
     around_time = -1
     
+    self.LOGGER.info("단과대학: " + self.DIR_NAME + ", 학부(과): " + self.PATH_NAME)
     self.LOGGER.debuggerInfo(f"{LECTURES_COUNT} classes were searched...")
     self.LOGGER.debuggerInfo(f"It will run around {SCROLL_COUNT} times...")
     
     if LECTURES_COUNT == 0:
-      self.LOGGER.info("This undergraduate program has been abolished...")
+      self.LOGGER.progress(0, 0, 1, 50)
 
     while True:
       tr_count = 0
@@ -62,7 +63,7 @@ class LectureCoreProcess(BaseProcess):
         self.LOGGER.debuggerInfo("Exit the process...")
         break
       
-      soup = BeautifulSoup(self.DRIVER.page_source, 'html.parser')
+      soup = BeautifulSoup(self.DRIVER.page_source, "html.parser")
       
       for tr in soup.select("tbody[id=\"gdM0_F0_body_tbody\"] tr"):
         tr_count += 1
@@ -105,8 +106,7 @@ class LectureCoreProcess(BaseProcess):
         
         self.API.lectureInfoWrite(rawLectureInfo)
         
-        self.LOGGER.debuggerInfo(self.DIR_NAME + " / " + self.PATH_NAME)
-        self.LOGGER.progress(int(rawLectureInfo[0]), LECTURES_COUNT, "Progress:", 1, 50)
+        self.LOGGER.progress(int(rawLectureInfo[0]), LECTURES_COUNT, 1, 50)
         self.LOGGER.debuggerInfo(text)
     
     self.API.jsonWrite("전체대학", self.PATH_NAME)

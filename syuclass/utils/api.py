@@ -65,4 +65,4 @@ class API:
     with open(self.API_PATH, "w", encoding = "utf-8") as f:
       json.dump(apiJson, f, ensure_ascii = False, indent = 2)
     
-    self.LOGGER.info("Check the file: " + self.API_PATH)
+    self.LOGGER.debuggerInfo("Check the file: " + self.API_PATH)

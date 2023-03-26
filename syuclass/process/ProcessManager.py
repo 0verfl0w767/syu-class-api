@@ -12,6 +12,9 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
+import datetime
+import time
+
 from syuclass.process.start.StartProcess import StartProcess
 from syuclass.process.login.LoginProcess import LoginProcess
 from syuclass.process.lecture.LectureInfoProcess import LectureInfoProcess
@@ -25,6 +28,10 @@ class ProcessManager:
     self.LOGGER = Logger(DEBUGGER)
       
   def onRun(self) -> None:
+    self.LOGGER.logo()
+    
+    start = time.time()
+    
     try:
       SP = StartProcess(self.OPTIONS, self.LOGGER)
       SP.onRun()
@@ -40,3 +47,7 @@ class ProcessManager:
     except Exception as e:
       self.LOGGER.info("An error occurred during processing...")
       self.LOGGER.info(str(e))
+    
+    end = time.time()
+    
+    self.LOGGER.info(str(datetime.timedelta(seconds=(end - start))))

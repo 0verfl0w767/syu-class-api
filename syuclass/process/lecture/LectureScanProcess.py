@@ -40,7 +40,7 @@ class LectureScanProcess(BaseProcess):
       EC.element_to_be_clickable((By.XPATH, "//*[@id=\"sbF_COLG_CD\"]"))
     ).click()
     
-    soup = BeautifulSoup(self.DRIVER.page_source, 'html.parser')
+    soup = BeautifulSoup(self.DRIVER.page_source, "html.parser")
     identification = 0
     
     for collegeTD in soup.select("table[id=\"sbF_COLG_CD_itemTable_main\"] tbody tr td"):
@@ -57,7 +57,7 @@ class LectureScanProcess(BaseProcess):
       
       self.OPTIONS["check_college"] = False
       
-      soup = BeautifulSoup(self.DRIVER.page_source, 'html.parser')
+      soup = BeautifulSoup(self.DRIVER.page_source, "html.parser")
       
       for undergraduateTD in soup.select("table[id=\"sbF_FCLT_CD_itemTable_main\"] tbody tr td"):
         if undergraduateTD["id"] == "sbF_FCLT_CD_itemTable_0":
@@ -78,5 +78,3 @@ class LectureScanProcess(BaseProcess):
       ).click()
     
     self.API.jsonWrite(".", "학부(과)")
-    
-    self.LOGGER.debuggerInfo("LectureScanProcess succeeded...")

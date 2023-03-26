@@ -83,7 +83,7 @@ class LoginProcess(BaseProcess):
     #   "scriptVersion": "3.0.0.6",
     # }
     WebDriverWait(self.DRIVER, 10).until(
-      lambda driver: driver.execute_script("return webcrypto").get('e2e') != None
+      lambda driver: driver.execute_script("return webcrypto").get("e2e") != None
     )
     
     userid = WebDriverWait(self.DRIVER, 10).until(
