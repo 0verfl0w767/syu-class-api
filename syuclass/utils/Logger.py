@@ -32,8 +32,9 @@ class Logger:
                 /____/                                        /_/              /___/                 
           
           Unofficial su-wings (SAHMYOOK UNIV.) lecture information system.
-          Planner: https://github.com/0verfl0w767
-          Developer: https://github.com/0verfl0w767
+          Github: https://github.com/0verfl0w767/syu-class-api
+          Author: 0verfl0w767 (https://github.com/0verfl0w767)
+          Version: 1.0v
           License: MIT LICENSE
           Debugger: {self.DEBUGGER}
           
