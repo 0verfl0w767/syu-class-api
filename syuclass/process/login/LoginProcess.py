@@ -12,8 +12,6 @@
 #  @link https://github.com/0verfl0w767
 #  @license MIT LICENSE
 #
-import sys
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -29,59 +27,6 @@ class LoginProcess(BaseProcess):
     self.LOGGER = LOGGER
   
   def onRun(self) -> None:
-    # webcrypto not loaded:
-    # {
-    #   "checkBrowser": {},
-    #   "getBrowserInfo": {},
-    #   "getBrowserVersion": {},
-    #   "getPlatformInfo": {},
-    #   "isLoadModule": {},
-    #   "loadModule": {},
-    #   "loadPfxFileIframe": {},
-    #   "loadScript": {},
-    #   "namespace": {},
-    #   "scriptVersion": "3.0.0.6",
-    # }
-    
-    # webcrypto loaded
-    # {
-    #   "checkBrowser": {},
-    #   "e2e": {
-    #       "checkModuleVersion": {},
-    #       "getLastErrMsg": {},
-    #       "getPasswordKeboardSession": {},
-    #       "getVersion": {},
-    #       "hashMessage": {},
-    #       "hybridEncrypt": {},
-    #       "hybridEncryptKeyboardSession": {},
-    #       "initializeModule": {},
-    #       "sessionDecrypt": {},
-    #       "sessionEncrypt": {},
-    #       "sessionFinalize": {},
-    #       "setSessionTime": {},
-    #       "web": {
-    #           "getLastErrMsg": {},
-    #           "getPasswordKeboardSession": {},
-    #           "hashMessage": {},
-    #           "hybridEncrypt": {},
-    #           "hybridEncryptKeyboardSession": {},
-    #           "sessionDecrypt": {},
-    #           "sessionEncrypt": {},
-    #           "sessionFinalize": {},
-    #           "setSessionTime": {},
-    #       },
-    #   },
-    #   "getBrowserInfo": {},
-    #   "getBrowserVersion": {},
-    #   "getPlatformInfo": {},
-    #   "isLoadModule": {},
-    #   "loadModule": {},
-    #   "loadPfxFileIframe": {},
-    #   "loadScript": {},
-    #   "msg": {"getLanguageConfig": {}, "getMessage": {}, "setLanguageConfig": {}},
-    #   "namespace": {},
-    #   "scriptVersion": "3.0.0.6",
-    # }
     WebDriverWait(self.DRIVER, 10).until(
       lambda driver: driver.execute_script("return webcrypto").get("e2e") != None
     )
