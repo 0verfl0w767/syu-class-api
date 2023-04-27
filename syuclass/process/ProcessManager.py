@@ -13,6 +13,8 @@
 #  @license MIT LICENSE
 #
 import datetime
+import os
+import signal
 import time
 
 from syuclass.process.start.StartProcess import StartProcess
@@ -32,10 +34,10 @@ class ProcessManager:
     
     start = time.time()
     
-    try:
-      SP = StartProcess(self.OPTIONS, self.LOGGER)
-      SP.onRun()
+    SP = StartProcess(self.OPTIONS, self.LOGGER)
+    SP.onRun()
       
+    try:
       LP = LoginProcess(SP.DRIVER, self.OPTIONS, self.LOGGER)
       LP.onRun()
       
@@ -51,3 +53,23 @@ class ProcessManager:
     end = time.time()
     
     self.LOGGER.info(str(datetime.timedelta(seconds=(end - start))))
+    
+    # issue in pypy3.
+    #
+    # Traceback (most recent call last):
+    #   File "C:\pypy\Lib\threading.py", line 980, in _bootstrap_inner
+    #     self.run()
+    #   File "C:\pypy\Lib\threading.py", line 917, in run
+    #     self._target(*self._args, **self._kwargs)
+    #   File "c:\Users\kim\.vscode\extensions\ms-python.python-2023.6.1\pythonFiles\lib\python\debugpy\launcher/../..\debugpy\common\messaging.py", line 1427, in _run_handlers
+    #     self._parser_thread.join()
+    #   File "C:\pypy\Lib\threading.py", line 1060, in join
+    #     self._wait_for_tstate_lock()
+    #   File "C:\pypy\Lib\threading.py", line 1081, in _wait_for_tstate_lock
+    #     lock.release()
+    # RuntimeError: cannot release un-acquired lock
+    #
+    # solved this problem. in pypy\Lib\threading.py (1066 lines)
+    # "raise" code annotation inside the _wait_for_tstate_lock()
+    
+    SP.DRIVER.quit()

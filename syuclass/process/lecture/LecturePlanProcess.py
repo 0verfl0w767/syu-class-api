@@ -56,6 +56,8 @@ class LecturePlanProcess(BaseProcess):
     GETYEAR.send_keys(Keys.ARROW_RIGHT)
     GETYEAR.send_keys(Keys.ARROW_RIGHT)
     GETYEAR.send_keys(Keys.BACK_SPACE)
+    GETYEAR.send_keys(Keys.BACK_SPACE)
+    GETYEAR.send_keys(year[-2])
     GETYEAR.send_keys(year[-1])
   
   def setSemester(self, semester) -> None:
